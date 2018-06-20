@@ -1,5 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.zfsoft.boot.socketio.SocketioHazelcastConfiguration,\
-com.zfsoft.boot.socketio.SocketioRedisConfiguration,\
-com.zfsoft.boot.socketio.SocketioServerAutoConfiguration

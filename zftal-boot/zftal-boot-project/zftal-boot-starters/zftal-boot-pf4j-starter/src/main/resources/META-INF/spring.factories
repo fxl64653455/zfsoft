@@ -1,3 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.zfsoft.boot.pf4j.Pf4jAutoConfiguration

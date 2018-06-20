@@ -1,7 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.zfsoft.boot.hikaricp.HikaricpDynamicAutoConfiguration,\
-com.zfsoft.boot.hikaricp.HikaricpAutoConfiguration,\
-com.zfsoft.boot.hikaricp.HikaricpWithDropwizardAutoConfiguration,\
-com.zfsoft.boot.hikaricp.HikaricpWithOnMicrometerAutoConfiguration,\
-com.zfsoft.boot.hikaricp.HikaricpWithOnPrometheusAutoConfiguration

@@ -1,6 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.zfsoft.boot.rocketmq.RocketmqProducerAutoConfiguration,\
-com.zfsoft.boot.rocketmq.RocketmqPushEventHandlerAutoConfiguration,\
-com.zfsoft.boot.rocketmq.RocketmqPullConsumerAutoConfiguration,\
-com.zfsoft.boot.rocketmq.RocketmqPushConsumerAutoConfiguration
