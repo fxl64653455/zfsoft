@@ -1,0 +1,56 @@
+#form-group-sql code, kbd, pre, samp {
+    font-size: 0.9em !important;
+}
+
+.body-api {
+	background-color: #dce1e6 !important;
+}
+
+.content-container-api {
+	background-color: #dce1e6 !important;
+}
+
+.bg-777 {
+	background-color: #777 !important;
+}
+
+.text-indent-2{
+	text-indent:2em;
+}
+
+.text-fff {
+	color: #FFF !important;
+}
+
+.width-80{
+	width: 80px;
+}
+
+.label-default{
+	color:#FFF !important;
+	background-color:#777! important;
+}
+
+.mCSB_inside>.mCSB_container{
+	margin-right: 0px !important;
+}
+
+#mainnav .list-header {
+    padding-left: 20px !important;
+    line-height: 1.5em;
+}
+
+#container:not(.mainnav-sm) #mainnav-menu-wrap>.nano>.nano-content {
+    padding-top: 10px;
+}
+#container.aside-in #aside {
+ 	padding-top: 60px;
+}
+@media (min-width: 1024px){
+	#container.aside-in #aside {
+   	 	padding-top: 60px;
+	}
+}
+.model{text-align: inherit !important;}
+
+

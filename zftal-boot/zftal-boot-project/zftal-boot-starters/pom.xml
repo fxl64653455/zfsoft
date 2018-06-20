@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<!-- POM的模型版本 -->
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.zfsoft</groupId>
+		<artifactId>zftal-boot-parent</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+		<relativePath>../zftal-boot-parent</relativePath>
+	</parent>
+
+	<artifactId>zftal-boot-starters</artifactId>
+	<packaging>pom</packaging>
+	<name>ZFtal Boot Starters</name>
+	
+	<modules>
+		<module>zftal-boot-actuator-starter</module>
+		<module>zftal-boot-cache-starter</module>
+		<module>zftal-boot-cxf-jaxrs-starter</module>
+		<module>zftal-boot-cxf-jaxws-starter</module>
+		<module>zftal-boot-disruptor-starter</module>
+		<module>zftal-boot-druid-starter</module>
+		<module>zftal-boot-flyway-starter</module>
+		<module>zftal-boot-freemarker-starter</module>
+		<module>zftal-boot-ftpclient-starter</module>
+		<module>zftal-boot-hikaricp-starter</module>
+		<module>zftal-boot-kaptcha-starter</module>
+		<module>zftal-boot-log4j2-starter</module>
+		<module>zftal-boot-metrics-starter</module>
+		<module>zftal-boot-mybatis-starter</module>
+		<module>zftal-boot-pac4j-starter</module>
+		<module>zftal-boot-pf4j-starter</module>
+		<module>zftal-boot-rocketmq-console</module>
+		<module>zftal-boot-rocketmq-starter</module>
+		<module>zftal-boot-safety-starter</module>
+		<module>zftal-boot-shardingjdbc-starter</module>
+		<module>zftal-boot-shiro-cas-starter</module>
+		<module>zftal-boot-shiro-pac4j-starter</module>
+		<module>zftal-boot-shiro-starter</module>
+		<module>zftal-boot-sitemesh3-starter</module>
+		<module>zftal-boot-smbclient-starter</module>
+		<module>zftal-boot-socketio-starter</module>
+		
+		<module>zftal-boot-web-starter</module>
+		<module>zftal-boot-websocket-starter</module>
+		<module>zftal-boot-dozer-starter</module>
+		<module>zftal-boot-soapui-starter</module>
+	</modules>
+
+</project>

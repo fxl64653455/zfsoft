@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.apimgr.dao.daointerface.IApiAuditDao" >
+
+	<insert id="insert" parameterType="ApiAuditModel">
+		insert into zftal_api_audit 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="auditId != null and auditId != ''">audit_id,</if>
+			<if test="auditTime != null and auditTime != ''">audit_time,</if>
+			<if test="auditFor != null and auditFor != ''">audit_for,</if>
+			<if test="auditUser != null and auditUser != ''">audit_user,</if>
+			<if test="auditOpinion != null and auditOpinion != ''">audit_opinion,</if>
+		</trim>
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			<if test="auditId != null and auditId != ''">#{auditId,jdbcType=VARCHAR},</if>
+			<if test="auditTime != null and auditTime != ''">#{auditTime,jdbcType=VARCHAR},</if>
+			<if test="auditFor != null and auditFor != ''">#{auditFor,jdbcType=VARCHAR},</if>
+			<if test="auditUser != null and auditUser != ''">#{auditUser,jdbcType=VARCHAR},</if>
+			<if test="auditOpinion != null and auditOpinion != ''">#{auditOpinion,jdbcType=VARCHAR},</if>
+		</trim>
+		<selectKey keyProperty="auditId" resultType="String" order="BEFORE">select sys_guid() from dual</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="ApiAuditModel">
+		update zftal_api_audit 
+		<set>
+			<if test="auditTime != null and auditTime != ''">audit_time = #{auditTime,jdbcType=VARCHAR},</if>
+			<if test="auditFor != null and auditFor != ''">audit_for = #{auditFor,jdbcType=VARCHAR},</if>
+			<if test="auditUser != null and auditUser != ''">audit_user = #{auditUser,jdbcType=VARCHAR},</if>
+			<if test="auditOpinion != null and auditOpinion != ''">audit_opinion = #{auditOpinion,jdbcType=VARCHAR},</if>
+		</set>
+		where audit_id = #{auditId,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete" parameterType="ApiAuditModel">
+		delete from zftal_api_audit where audit_id = #{auditId,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="getModelList" resultType="ApiAuditModel" parameterType="ApiAuditModel">
+		select audit_id as auditId,audit_time as auditTime,audit_for as auditFor,audit_user as auditUser,audit_opinion as auditOpinion from zftal_api_audit
+		<where>
+			<if test="auditId != null and auditId != ''">
+				and audit_id = #{auditId} 
+			</if>
+			<if test="auditTime != null and auditTime != ''">
+				and audit_time = #{auditTime} 
+			</if>
+			<if test="auditFor != null and auditFor != ''">
+				and audit_for = #{auditFor} 
+			</if>
+			<if test="auditUser != null and auditUser != ''">
+				and audit_user = #{auditUser} 
+			</if>
+			<if test="auditOpinion != null and auditOpinion != ''">
+				and audit_opinion = like '%'||#{auditOpinion}||'%' 
+			</if>
+		</where>
+	</select>
+	
+</mapper>

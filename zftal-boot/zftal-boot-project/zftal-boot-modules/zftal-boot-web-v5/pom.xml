@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zfsoft</groupId>
+		<artifactId>zftal-boot-modules</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>zftal-boot-web-v5</artifactId>
+	
+	<dependencies>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<!-- For Web -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-web-starter</artifactId>
+		</dependency>
+		<!-- For Safety -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-safety-starter</artifactId>
+		</dependency>
+		<!-- For Webjars -->
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>webjars-locator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-ui-v5</artifactId>
+			<classifier>webjars</classifier>
+		</dependency>
+		<!-- For Freemarker -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-freemarker-starter</artifactId>
+		</dependency>
+		<!-- For Cache -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-cache-starter</artifactId>
+		</dependency>
+		<!-- For Mybatis -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-mybatis-starter</artifactId>
+		</dependency>
+		<!-- For Flyway -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-flyway-starter</artifactId>
+		</dependency>
+		<!-- For Oracle 11g -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- For MySQL -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <scope>runtime</scope>
+		</dependency>
+		
+		<!-- For Embed Tomcat -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </dependency>
+		<!-- <dependency>
+		    <groupId>org.apache.tomcat.embed</groupId>
+		    <artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>	
+			<scope>provided</scope>
+		</dependency> -->
+		
+		<!-- ###################### 正方软件快速开发框架 ###################### -->
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-api</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>${project.groupId}</groupId>
+					<artifactId>zfkit-shiro</artifactId>
+				</exclusion>
+				<exclusion>
+		      		<groupId>${project.groupId}</groupId>
+					<artifactId>zfkit-freemarker</artifactId>
+		        </exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-webmvc</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+	</dependencies>
+	
+</project>

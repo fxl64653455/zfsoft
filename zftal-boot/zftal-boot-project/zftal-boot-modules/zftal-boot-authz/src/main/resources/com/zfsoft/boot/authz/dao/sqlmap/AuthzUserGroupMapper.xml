@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.authz.dao.daointerface.IAuthzUserGroupDao" >
+
+	 <!-- 增加角色信息 -->
+    <insert id="insert" parameterType="RoleModel">
+    	insert into zftal_xtgl_jsxxb(jsdm,jsmc,jssm,jszt,jslx,yhm) values (#{jsdm},#{jsmc},#{jssm},#{jszt},#{jslx},#{yhm})
+    </insert>
+    
+    <!-- 修改角色信息 -->
+    <update id="update" parameterType="RoleModel">
+    	update zftal_xtgl_jsxxb t
+    	<set>
+    		<if test="jsmc != null">
+    			t.jsmc = #{jsmc},
+    		</if>
+    		<if test="jssm != null">
+    			t.jssm = #{jssm},
+    		</if>
+    		<if test="jszt != null">
+    			t.jszt = #{jszt}
+    		</if>
+    	</set> 
+    	where jsdm=#{jsdm} 
+    </update>
+    
+    <!-- 删除角色信息 -->
+    <delete id="batchDelete" >
+   	 	delete zftal_xtgl_jsxxb t where t 
+    	 <foreach collection="list" item="item" index="index" separator=" OR">
+			   t.jsdm = #{item.pkValue} 
+		</foreach>
+    </delete>
+    
+    <!-- 查询角色信息列表（分页） -->
+    <select id="getPagedList" parameterType="RoleModel"  resultType="RoleModel">
+		select t.jsdm,
+		       t.jsmc,
+		       t.jssm,
+		       t.jslx,
+		       t.jszt,
+		       t.yhm,
+		       (select x.xm from zftal_xtgl_yhb x where x.yhm = t.yhm) xm,
+		       (select count(1) from zftal_xtgl_yhjsb t2 where t.jsdm = t2.jsdm) yhs
+		  from zftal_xtgl_jsxxb t
+    	<where>
+    		<if test="jssm != null">
+    			t.jssm like '%'||#{jssm}||'%',
+    		</if>
+    		<if test="jslx != null">
+    			t.jslx = #{jslx},
+    		</if>
+    		<if test="jszt != null">
+    			t.jszt = #{jszt}
+    		</if>
+		 </where>
+    </select>
+    
+    <!-- 查询可用全部角色 -->
+    <select id="getModelList"   resultType="RoleModel">
+		select t.jsdm,
+		       t.jsmc,
+		       t.jssm,
+		       t.jslx,
+		       t.jszt,
+		       t.yhm,
+		       (select x.xm from zftal_xtgl_yhb x where x.yhm = t.yhm) xm,
+		       (select count(1) from zftal_xtgl_yhjsb t2 where t.jsdm = t2.jsdm) yhs
+		  from zftal_xtgl_jsxxb t
+		 where t.jszt = '1'
+    </select>
+    
+	<!-- 查询单条角色信息 -->
+    <select id="getModel" parameterType="RoleModel" resultType="RoleModel">
+        select t.jsdm,
+		       t.jsmc,
+		       t.jssm,
+		       t.jslx,
+		       t.jszt,
+		       t.yhm,
+		       (select x.xm from zftal_xtgl_yhb x where x.yhm = t.yhm) xm,
+		       (select count(1) from zftal_xtgl_yhjsb t2 where t.jsdm = t2.jsdm) yhs
+		  from zftal_xtgl_jsxxb t
+		 where t.jsdm = #{jsdm}
+    </select>
+
+	<!-- 删除角色信息 -->
+	<delete id="delete" parameterType="string" >
+		delete from zftal_xtgl_jsxxb t where t.jsdm = #{jsdm}
+	</delete>
+    
+</mapper>

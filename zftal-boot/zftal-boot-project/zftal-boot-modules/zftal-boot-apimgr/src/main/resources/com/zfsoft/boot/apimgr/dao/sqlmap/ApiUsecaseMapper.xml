@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.apimgr.dao.daointerface.IApiUsecaseDao" >
+	
+	<resultMap id="ApiUsecaseMap" type="ApiUsecaseModel">
+		<result property="id" column="USECASE_ID" />
+		<result property="deployId" column="USECASE_FOR" />
+		<result property="language" column="USECASE_LANG" />
+	</resultMap>
+	
+	<select id="getModelList" resultMap="ApiUsecaseMap" parameterType="ApiUsecaseModel">
+		select t.USECASE_ID,t.USECASE_FOR,t.USECASE_LANG
+		 from ZFTAL_API_USECASE t 
+		 where t.USECASE_FOR = #{deployId}
+	</select>
+	
+	<insert id="insert" parameterType="ApiDeployModel">
+		declare
+			var_tmp varchar2(32);
+	 	begin
+	 	
+			 delete from ZFTAL_API_USECASE t 
+			 where t.USECASE_FOR = #{deployId}
+	 		<foreach collection="queryList" item="lang"  open=" AND t.USECASE_LANG in (" separator="," close=")">
+			   #{lang}
+			</foreach>;
+			
+			<foreach collection="queryList" item="lang">
+			   <![CDATA[
+					INSERT INTO  ZFTAL_API_USECASE ( USECASE_FOR, USECASE_LANG)
+					VALUES( #{deployId}, #{lang} );
+				]]>
+			</foreach>
+		end;
+	</insert>
+	
+</mapper>

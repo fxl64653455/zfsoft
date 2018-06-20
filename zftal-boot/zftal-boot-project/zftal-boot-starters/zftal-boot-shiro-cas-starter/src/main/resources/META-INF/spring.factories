@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.zfsoft.boot.shiro.ShiroCasWebAutoConfiguration,\
+com.zfsoft.boot.shiro.ShiroCasWebFilterConfiguration

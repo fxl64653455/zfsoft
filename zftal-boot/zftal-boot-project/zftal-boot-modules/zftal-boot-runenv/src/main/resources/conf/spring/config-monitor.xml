@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+	
+ 	<!-- 加载密码找回属性实例，可通过  @Value("#{monitorProps['key']}") 方式引用 -->
+	<util:properties id="monitorProps" location="classpath:zftal-monitor.properties"  local-override="true"/>
+	
+	<!-- Oracle数据库配置数据提供者实现 -->
+	<bean id="wacthPropsProvider" class="com.zfsoft.api.conf.def.OracleMultiPropertiesProvider">
+		<!-- props: 基于配置文件的默认配置 -->
+		<property name="defaultProps" ref="monitorProps"/>
+		<!-- propKeys: 指定从参数设置表提取的参数 -->
+		<property name="propKeys">
+			<list>
+				<value>MONITOR</value>
+			</list>
+		</property>
+   	</bean>
+    
+    <!-- 监控数据服务提供者内部实现 -->
+	<bean id="memoryInfoInternalProvider" class="com.zfsoft.boot.runenv.provider.MemoryInfoInternalProvider">
+		<!-- propsProvider: 参数配置提供者实现 -->
+		<property name="propsProvider" ref="wacthPropsProvider"/>
+	</bean>
+	
+	<!-- 监控数据服务提供者数据库实现 -->
+	<bean id="memoryInfoDatabaseProvider" class="com.zfsoft.boot.runenv.provider.MemoryInfoDatabaseProvider">
+		<!-- propsProvider: 参数配置提供者实现 -->
+		<property name="propsProvider" ref="wacthPropsProvider"/>
+	</bean>
+	  
+    <bean id="memoryInfoNoticeProvider" class="com.zfsoft.boot.runenv.provider.MemoryInfoNoticeProvider">
+	</bean>
+	    
+</beans>

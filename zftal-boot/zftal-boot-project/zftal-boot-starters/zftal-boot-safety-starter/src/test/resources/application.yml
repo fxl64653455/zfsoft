@@ -1,0 +1,30 @@
+zftal:
+  http: 
+    safety: 
+      url-patterns: /*
+      definition-map:
+        / : httpHeaderControl,httpMethodControl,httpXssControl
+        /druid/** : noneControl
+        /pwdmgr/retake/** : httpXssControl
+        /pwdmgr/update/** : httpXssControl
+        /xtgl/xwgl/zjBcXw* : httpHeaderControl,httpMethodControl,httpRichtextXssControl
+        /xtgl/xwgl/xgBcXw* : httpHeaderControl,httpMethodControl,httpRichtextXssControl
+        /** : httpHeaderControl,httpMethodControl,httpXssControl
+      http-cors-filter:
+        enabled: true
+        access-control-allow-origin: '*'
+        access-control-allow-credentials: true
+        access-control-allow-headers: X-Requested-With
+        access-control-allow-methods: GET,POST
+      http-header-filter:
+        enabled: true
+        x-content-type-options: SAMEORIGIN
+        x-frame-options: nosniff
+        x-xss-protection: 1; mode=block
+      http-methods-filter:
+        enabled: true
+        allowed-http-methods:
+        - GET
+        - POST
+      http-richtext-xss-filter:
+        enabled: true

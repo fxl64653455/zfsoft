@@ -1,0 +1,9 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.zfsoft.boot.shiro.cache.ShiroEhCacheAutoConfiguration,\
+com.zfsoft.boot.shiro.ShiroCasPac4jWebAutoConfiguration,\
+com.zfsoft.boot.shiro.ShiroCasPac4jWebFilterConfiguration,\
+com.zfsoft.boot.shiro.ShiroCasWebAutoConfiguration,\
+com.zfsoft.boot.shiro.ShiroCasWebFilterConfiguration,\
+com.zfsoft.boot.shiro.ShiroBizWebAutoConfiguration,\
+com.zfsoft.boot.shiro.ShiroBizWebFilterConfiguration

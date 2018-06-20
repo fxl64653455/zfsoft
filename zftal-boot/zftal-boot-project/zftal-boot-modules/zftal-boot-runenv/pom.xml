@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zfsoft</groupId>
+		<artifactId>zftal-boot-modules</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>zftal-boot-runenv</artifactId>
+
+	<properties>
+		<sigar.version>1.6.5.132-6</sigar.version>
+	</properties>
+
+	<dependencies>
+
+		<!-- For Mybatis -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-mybatis-starter</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-api</artifactId>
+			<version>${project.version}</version>
+			<exclusions> 
+				<exclusion>
+					<groupId>${project.groupId}</groupId>
+					<artifactId>zfkit-shiro</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-webmvc</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zfkit-metrics</artifactId>
+			<version>${zfkit.version}</version>
+			<exclusions> 
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-cache-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-shiro-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zfkit-cache-ehcache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-socketio-starter</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hyperic</groupId>
+			<artifactId>sigar-native</artifactId>
+			<version>${sigar.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-ms</artifactId>
+			<version>${parent.version}</version>
+		</dependency>
+		
+	</dependencies>
+
+</project>

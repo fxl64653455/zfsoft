@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zfsoft</groupId>
+		<artifactId>zftal-boot-starters</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>zftal-boot-rocketmq-console</artifactId>
+	
+	<properties>
+		<netty-tcnative.version>2.0.7.Final</netty-tcnative.version>
+		<!-- http://netty.io/wiki/forked-tomcat-native.html: windows-x86_64,osx-x86_64,linux-x86_64 -->
+		<os.detected.classifier>linux-x86_64</os.detected.classifier>
+		<joor.version>0.9.8</joor.version>
+	</properties>
+	
+	<dependencies>
+		 
+		<!-- Spring-Boot Web 启动器 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- @ConfigurationProperties annotation processing (metadata for IDEs) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- Compile dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-tools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-namesrv</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-broker</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>io.netty</groupId>
+					<artifactId>netty-tcnative</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+	      	<groupId>io.netty</groupId>
+	      	<artifactId>netty-tcnative</artifactId>
+	      	<version>${netty-tcnative.version}</version>
+	      	<classifier>${os.detected.classifier}</classifier>
+	    </dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+		<!-- Spring AOP + AspectJ -->
+		<!-- https://mvnrepository.com/artifact/cglib/cglib-nodep -->
+		<dependency>
+		    <groupId>cglib</groupId>
+		    <artifactId>cglib-nodep</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>joor</artifactId>
+			<version>${joor.version}</version>
+		</dependency>
+
+	</dependencies>
+
+</project>

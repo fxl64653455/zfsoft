@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.apimgr.dao.daointerface.IApiApplyDao" >
+
+	<insert id="insert" parameterType="ApiApplyModel">
+		insert into zftal_api_apply 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="applyId != null and applyId != ''">apply_id,</if>
+			<if test="applyTime != null and applyTime != ''">apply_time,</if>
+			<if test="applyFor != null and applyFor != ''">apply_for,</if>
+			<if test="applyTo != null and applyTo != ''">apply_to,</if>
+			<if test="applyUser != null and applyUser != ''">apply_user,</if>
+			<if test="applyStatus != null and applyStatus != ''">apply_status,</if>
+			<if test="apiKey != null and apiKey != ''">api_key,</if>
+			<if test="apiSecret != null and apiSecret != ''">api_secret,</if>
+			<if test="invokeIp != null and invokeIp != ''">invoke_ip,</if>
+			<if test="invokeFrequency != null and invokeFrequency != ''">invoke_frequency,</if>
+			<if test="applyFile != null and applyFile != ''">apply_file,</if>
+		</trim>
+		<trim prefix=" values (" suffix=")" suffixOverrides=",">
+			<if test="applyId != null and applyId != ''">#{applyId,jdbcType=VARCHAR},</if>
+			<if test="applyTime != null and applyTime != ''">#{applyTime,jdbcType=VARCHAR},</if>
+			<if test="applyFor != null and applyFor != ''">#{applyFor,jdbcType=VARCHAR},</if>
+			<if test="applyTo != null and applyTo != ''">#{applyTo,jdbcType=VARCHAR},</if>
+			<if test="applyUser != null and applyUser != ''">#{applyUser,jdbcType=VARCHAR},</if>
+			<if test="applyStatus != null and applyStatus != ''">#{applyStatus,jdbcType=VARCHAR},</if>
+			<if test="apiKey != null and apiKey != ''">#{apiKey,jdbcType=VARCHAR},</if>
+			<if test="apiSecret != null and apiSecret != ''">#{apiSecret,jdbcType=VARCHAR},</if>
+			<if test="invokeIp != null and invokeIp != ''">#{invokeIp,jdbcType=VARCHAR},</if>
+			<if test="invokeFrequency != null and invokeFrequency != ''">#{invokeFrequency,jdbcType=INTEGER},</if>
+			<if test="applyFile != null and applyFile != ''">#{applyFile,jdbcType=BLOB},</if>
+		</trim>
+		<selectKey keyProperty="applyId" resultType="String" order="BEFORE">select sys_guid() from dual</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="ApiApplyModel">
+		update zftal_api_apply 
+		<set>
+			<if test="applyTime != null and applyTime != ''">apply_time = #{applyTime,jdbcType=VARCHAR},</if>
+			<if test="applyFor != null and applyFor != ''">apply_for = #{applyFor,jdbcType=VARCHAR},</if>
+			<if test="applyTo != null and applyTo != ''">apply_to = #{applyTo,jdbcType=VARCHAR},</if>
+			<if test="applyUser != null and applyUser != ''">apply_user = #{applyUser,jdbcType=VARCHAR},</if>
+			<if test="applyStatus != null and applyStatus != ''">apply_status = #{applyStatus,jdbcType=VARCHAR},</if>
+			<if test="apiKey != null and apiKey != ''">api_key = #{apiKey,jdbcType=VARCHAR},</if>
+			<if test="apiSecret != null and apiSecret != ''">api_secret = #{apiSecret,jdbcType=VARCHAR},</if>
+			<if test="invokeIp != null and invokeIp != ''">invoke_ip = #{invokeIp,jdbcType=VARCHAR},</if>
+			<if test="invokeFrequency != null and invokeFrequency != ''">invoke_frequency = #{invokeFrequency,jdbcType=INTEGER},</if>
+			<if test="applyFile != null and applyFile != ''">apply_file = #{applyFile,jdbcType=BLOB},</if>
+		</set>
+		where apply_id = #{applyId,jdbcType=VARCHAR}
+	</update>
+	
+	<sql id="Base_Query_Sql">
+		select ZAL.APPLY_FOR as applyFor,ZAL.APPLY_ID as applyId,ZAL.APPLY_STATUS as applyStatus,ZAL.APPLY_TIME as applyTime,ZAL.APPLY_TO as applyTo,
+			ZAL.APPLY_USER as applyUser,ZAI.API_NAME as apiName,ZAI.API_INFO as apiInfo,zad.deploy_status as apiStatus,zaa.app_name as appName,zau.audit_opinion as auditOpinion,
+			zal.invoke_ip as invokeIp,zal.invoke_frequency as invokeFrequency,zal.api_key as apiKey,zal.api_secret as apiSecret 
+			from ZFTAL_API_APPLY zal
+			join ZFTAL_API_DEPLOY zad on zal.APPLY_FOR = zad.deploy_id
+			join ZFTAL_API_INFO zai on zai.API_ID = zad.deploy_for
+			left join ZFTAL_API_APP zaa on zal.apply_to = zaa.app_id 
+			left join ZFTAL_API_AUDIT zau on zal.apply_id = zau.audit_for
+			where 1=1 
+			<if test="apiName != null and apiName != ''">
+				and zai.api_name like '%'|| #{apiName} ||'%' 
+			</if>
+			<if test="applyTo != null and applyTo != ''">
+				and zal.apply_to = #{applyTo} 
+			</if>
+	</sql>
+	
+	<!-- 查询申请信息列表 -->
+	<select id="getPagedList" resultType="ApiApplyModel" parameterType="ApiApplyModel">
+		<include refid="Base_Query_Sql" />
+		<if test="applyUser != null and applyUser != ''">
+			and zal.apply_user = #{applyUser} 
+		</if>
+	</select>
+	
+	<!-- 查询审核信息列表 -->
+	<select id="getPagedAuditList" resultType="ApiApplyModel" parameterType="ApiApplyModel">
+		<include refid="Base_Query_Sql" />
+		<if test="applyUser != null and applyUser != ''">
+			and zad.deploy_owner = #{applyUser} 
+		</if>
+	</select>
+	
+	<select id="getModel" resultType="ApiApplyModel" parameterType="java.lang.String">
+		select apply_id as applyId,apply_time as applyTime,apply_for as applyFor,apply_to as applyTo,apply_user as applyUser,apply_status as applyStatus,
+			invoke_ip as invokeIp,invoke_frequency as invokeFrequency,apply_file as applyFile,api_key as apiKey,api_secret as apiSecret from zftal_api_apply
+			where apply_id = #{id}
+	</select>
+	
+	<select id="getModelList" resultType="ApiApplyModel" parameterType="ApiApplyModel">
+		select apply_id as applyId,apply_time as applyTime,apply_for as applyFor,apply_to as applyTo,apply_user as applyUser,apply_status as applyStatus,
+			invoke_ip as invokeIp,invoke_frequency as invokeFrequency,apply_file as applyFile,api_key as apiKey,api_secret as apiSecret from zftal_api_apply
+		<where>
+			<if test="applyId != null and applyId != ''">
+				and apply_id = #{applyId} 
+			</if>
+			<if test="applyTime != null and applyTime != ''">
+				and apply_time = #{applyTime} 
+			</if>
+			<if test="applyFor != null and applyFor != ''">
+				and apply_for = #{applyFor} 
+			</if>
+			<if test="applyTo != null and applyTo != ''">
+				and apply_to = #{applyTo} 
+			</if>
+			<if test="applyUser != null and applyUser != ''">
+				and apply_user = #{applyUser} 
+			</if>
+			<if test="applyStatus != null and applyStatus != ''">
+				and apply_status = #{applyStatus} 
+			</if>
+		</where>
+	</select>
+	
+	<delete id="delete" parameterType="ApiApplyModel">
+		delete from zftal_api_apply where apply_id = #{applyId,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="comboListByOwner" resultType="com.zfsoft.boot.apimgr.dao.entities.ApplyCombo" parameterType="java.lang.String">
+		select zaa.apply_id as applyId,zai.api_name as apiName from zftal_api_apply zaa
+			join ZFTAL_API_DEPLOY zad on zaa.apply_for = zad.deploy_id
+			join ZFTAL_API_INFO zai on zad.deploy_for = zai.api_id
+			where zaa.apply_status='1' and zaa.apply_user = #{owner}
+	</select>
+	
+</mapper>

@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zfsoft</groupId>
+		<artifactId>zftal-boot-starters</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>zftal-boot-hikaricp-starter</artifactId>
+
+	<dependencies>
+
+		<!-- Java Servlet API -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Core starter, including auto-configuration support, logging and YAML -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- @ConfigurationProperties annotation processing (metadata for IDEs) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- Compile dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<!-- 与数据库操作相关的依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tomcat</groupId>
+					<artifactId>tomcat-jdbc</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- exclude tomcat-jdbc, Spring Boot will use HikariCP automatically -->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-core -->
+		<dependency>
+		    <groupId>io.micrometer</groupId>
+		    <artifactId>micrometer-core</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/io.prometheus/simpleclient -->
+		<dependency>
+		    <groupId>io.prometheus</groupId>
+		    <artifactId>simpleclient</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- Metrics is a Java library which gives you unparalleled insight into 
+					what your code does in production. Metrics provides a powerful toolkit of 
+			ways to measure the behavior of critical components in your production environment. -->
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+			 <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zfkit-db-core</artifactId>
+		</dependency>
+ 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+	</dependencies>
+
+</project>

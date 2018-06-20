@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zfsoft</groupId>
+		<artifactId>zftal-boot-modules</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+	</parent>
+	<artifactId>zftal-boot-webmvc</artifactId>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zftal-boot-api</artifactId>
+			<version>${project.version}</version>
+			<exclusions> 
+				<exclusion>
+					<groupId>${project.groupId}</groupId>
+					<artifactId>zfkit-shiro</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- ###################### 正方软件快速快发组件 ###################### -->
+		 
+		<!-- zfkit-web : Web快速调用组件 -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>zfkit-web-ext</artifactId>
+		</dependency>
+
+		<!-- ###################### Java Web 组件 ###################### -->
+
+		<!-- Swagger API 注解包 -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.dozer/dozer -->
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+	</dependencies>
+
+</project>

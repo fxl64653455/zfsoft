@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.authz.dao.daointerface.IAuthzLoginDao">
+
+	<sql id="AccountSQL">
+		select a.yhm,
+		       a.xm,       
+		       a.sjhm,
+		       a.dzyx,
+		       nvl(a.yhzt, '0') yhzt
+		  from zftal_xtgl_yhb a
+		 where a.yhm = #{yhm}
+	</sql>
+	
+	<!-- 根据用户ID和密码查询用户信息  -->
+	<select id="getAccount" parameterType="string" resultType="LoginModel">
+		<include refid="AccountSQL"/>
+		   and a.mm = #{mm}
+    </select>
+    
+	<!-- 无密码根据用户ID用户信息  -->
+	<select id="getAccountWithoutPwd" parameterType="string" resultType="LoginModel">
+	   	<include refid="AccountSQL"/>
+    </select> 
+    
+    <!-- 根据用户ID和密码查询用户可否登录，角色数量等信息  -->
+	<select id="getAccountStatus" parameterType="string" resultType="hashmap">
+	    select (select to_char(count('1')) from zftal_xtgl_yhb a where a.yhm = #{yhm}) num_1,
+		       (select to_char(count('1')) from zftal_xtgl_yhb b where b.yhm = #{yhm} and b.mm = #{mm,jdbcType=VARCHAR} ) num_2,
+		       (select to_char(count('1')) from zftal_xtgl_yhjsb c where c.yhm = #{yhm}) num_3,
+		       nvl((select to_char(nvl(d.yhzt,'0')) from zftal_xtgl_yhb d where d.yhm = #{yhm}),'0') num_4
+		from dual
+    </select> 
+    
+</mapper>

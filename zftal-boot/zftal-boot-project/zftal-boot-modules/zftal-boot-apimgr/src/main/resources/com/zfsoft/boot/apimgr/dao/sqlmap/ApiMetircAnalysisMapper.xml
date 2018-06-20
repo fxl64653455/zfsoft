@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.apimgr.dao.daointerface.IApiMetircAnalysisDao" >
+	
+	<sql id="Base_Query_SQL" >
+		<if test="bizId != null and bizId != '' ">
+			AND t.BIZ_ID = #{bizId}
+		</if>
+		<if test="appKey != null and appKey != '' ">
+			AND t.APP_KEY = #{appKey}
+		</if>
+		<if test="addr != null and addr != '' ">
+			AND t.ADDR = #{addr}
+		</if>
+		<if test="deviceName != null and deviceName != '' ">
+			AND t.DEVICE_NAME = #{deviceName}
+		</if>
+		<if test="osName != null and osName != '' ">
+			AND t.OS_NAME = #{osName}
+		</if>
+		<if test="osVer != null and osVer != '' ">
+			AND t.OS_VER = #{osVer}
+		</if>
+		<if test="osMfr != null and osMfr != '' ">
+			AND t.OS_MFR = #{osMfr}
+		</if>
+		<if test="browserName != null and browserName != '' ">
+			AND t.BROWSER_NAME = #{browserName}
+		</if>
+		<if test="browserVer != null and browserVer != '' ">
+			AND t.BROWSER_VER = #{browserVer}
+		</if>
+		<if test="browserType != null and browserType != '' ">
+			AND t.BROWSER_TYPE = #{browserType}
+		</if>
+		<if test="browserKernel != null and browserKernel != '' ">
+			AND t.BROWSER_KERNEL = #{browserKernel}
+		</if>
+	</sql>
+	 
+	 
+	<select id="getRatio" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+	   	SELECT t.uri, COUNT('1') count, 100 * round(COUNT('1')/SUM(COUNT('1')) OVER(),4) psnd
+	   	  FROM ZFTAL_METRIC_DATA t 
+		  where t.URI is not null
+	      <include refid="Base_Query_SQL" />
+		  group by t.URI
+	</select>
+	
+	<select id="getTop" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.uri,z.count FROM (
+		   	SELECT t.uri,COUNT('1') count FROM ZFTAL_METRIC_DATA t 
+			  where t.URI is not null
+		      <include refid="Base_Query_SQL" />
+			  group by t.URI
+		) z <![CDATA[
+			where rownum <= #{top} order by count desc
+		]]>
+	</select>
+	
+	<select id="getAppRatio" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT t.APP_KEY as appKey,
+		       (select x.APP_NAME from ZFTAL_API_APP x where x.app_key = t.app_key and rownum = 0) as appName,
+		       (select x.APP_DESC from ZFTAL_API_APP x where x.app_key = t.app_key and rownum = 0) as appDesc,
+		       COUNT('1') appCount,
+		       100 * round(COUNT('1') / SUM(COUNT('1')) OVER(), 4) psnd
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.APP_KEY is not null
+		  <include refid="Base_Query_SQL" />
+		  group by t.APP_KEY
+	</select>
+	
+	<select id="getAppDaily" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.appKey, z.appName, z.appDesc, z.count, z.daily
+		  FROM (SELECT y.appKey,
+		               nvl((select x.APP_NAME from ZFTAL_API_APP x where x.app_key = y.appKey and rownum = 0),'Unkown') as appName,
+		               (select x.APP_DESC from ZFTAL_API_APP x where x.app_key = y.appKey and rownum = 0) as appDesc,
+		               COUNT('1') count,
+		               y.daily
+		          FROM (SELECT t.APP_KEY as appKey,
+		                       to_char(to_date(t.time24, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-MM-dd') as daily
+		                  FROM ZFTAL_METRIC_DATA t
+		                 where t.APP_KEY is not null
+		                 <include refid="Base_Query_SQL" />
+		               ) y
+		         group by y.appKey, y.daily
+		  ) z <![CDATA[
+			 where rownum <= #{top} order by z.daily desc
+		  ]]>
+	</select>
+	
+	<select id="getAppList" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT distinct t.APP_KEY as appKey,
+		                nvl((select x.APP_NAME
+		                      from ZFTAL_API_APP x
+		                     where x.app_key = t.APP_KEY and rownum = 0),
+		                    'Unkown') as appName
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.APP_KEY is not null
+	</select>
+	
+	<select id="getAppTop" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.appKey,z.appName,z.appDesc,z.count FROM (
+			SELECT t.APP_KEY as appKey,
+			       (select x.APP_NAME from ZFTAL_API_APP x where x.app_key = t.app_key and rownum = 0) as appName,
+			       (select x.APP_DESC from ZFTAL_API_APP x where x.app_key = t.app_key and rownum = 0) as appDesc,
+			       COUNT('1') count
+			  FROM ZFTAL_METRIC_DATA t
+			  where t.APP_KEY is not null
+		      <include refid="Base_Query_SQL" />
+			  group by t.APP_KEY
+		) z <![CDATA[
+			where rownum <= #{top} order by z.count desc
+		]]>
+	</select>
+	
+	<select id="getBizRatio" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT t.BIZ_ID as bizId,
+		       t.BIZ_NAME as bizName,
+		       COUNT('1') bizCount,
+		       100 * round(COUNT('1') / SUM(COUNT('1')) OVER(), 4) psnd
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.BIZ_ID is not null
+		<include refid="Base_Query_SQL" />
+		group by t.BIZ_ID,t.BIZ_NAME
+	</select>
+	
+	<select id="getBizDaily" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.bizId,z.bizName,z.count,z.daily
+		  FROM (SELECT y.bizId,
+		               y.bizName,
+		               COUNT('1') count,
+		               y.daily
+		          FROM (SELECT t.BIZ_ID as bizId,
+		   	        		   nvl(t.BIZ_NAME,'Unkown') as bizName,
+		                       to_char(to_date(t.time24, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-MM-dd') as daily
+		                  FROM ZFTAL_METRIC_DATA t
+		                 where t.BIZ_ID is not null
+		                 <include refid="Base_Query_SQL" />
+		               ) y
+		         group by y.bizId, y.bizName, y.daily
+		  ) z <![CDATA[
+			 where rownum <= #{top} order by z.daily desc
+		  ]]>
+	</select>
+	
+	<select id="getBizList" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT distinct t.BIZ_ID as bizId,nvl(t.BIZ_NAME, 'Unkown') as bizName
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.BIZ_ID is not null
+	</select>
+	
+	<select id="getBizTop" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.bizId,z.bizName,z.count FROM (
+		   SELECT t.BIZ_ID as bizId,
+		   	      t.BIZ_NAME as bizName,
+			      COUNT('1') count 
+			   FROM ZFTAL_METRIC_DATA t 
+			  where t.BIZ_ID is not null
+		      <include refid="Base_Query_SQL" />
+			  group by t.BIZ_ID,t.BIZ_NAME
+		) z <![CDATA[
+			where rownum <= #{top} order by z.count desc
+		]]>
+	</select>
+	
+	<select id="getDeviceRatio" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		 SELECT t.DEVICE_NAME as deviceName, 
+				COUNT('1') deviceCount, 
+				100 * round(COUNT('1')/SUM(COUNT('1')) OVER(),4) psnd
+		FROM ZFTAL_METRIC_DATA t
+		where t.DEVICE_NAME is not null
+		<include refid="Base_Query_SQL" />
+		group by t.DEVICE_NAME
+	</select>
+	
+	<select id="getDeviceDaily" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.deviceName,z.count,z.daily
+		  FROM (SELECT y.deviceName,
+		               COUNT('1') count,
+		               y.daily
+		          FROM (SELECT nvl(t.DEVICE_NAME,'Unkown') as deviceName,
+		                       to_char(to_date(t.time24, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-MM-dd') as daily
+		                  FROM ZFTAL_METRIC_DATA t
+		                 where t.DEVICE_NAME is not null
+		                 <include refid="Base_Query_SQL" />
+		               ) y
+		         group by y.deviceName, y.daily
+		  ) z <![CDATA[
+			 where rownum <= #{top} order by z.daily desc
+		  ]]>
+	</select>
+	
+	<select id="getDeviceList" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT distinct nvl(t.DEVICE_NAME,'Unkown') as deviceName
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.DEVICE_NAME is not null
+	</select>
+	
+	<select id="getDeviceTop" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.deviceName,z.count FROM (
+			SELECT t.DEVICE_NAME as deviceName, 
+				   COUNT('1') count
+			  FROM ZFTAL_METRIC_DATA t
+			  where t.DEVICE_NAME is not null
+		      <include refid="Base_Query_SQL" />
+			  group by t.DEVICE_NAME
+		) z <![CDATA[
+			where rownum <= #{top} order by z.count desc
+		]]>
+	</select>
+	
+	<select id="getOsRatio" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		 SELECT t.OS_NAME as osName,
+		 		t.OS_VER as osVer,
+				t.OS_MFR as osMfr, 
+				COUNT('1') osCount, 
+				100 * round(COUNT('1')/SUM(COUNT('1')) OVER(),4) psnd
+		FROM ZFTAL_METRIC_DATA t
+		where t.OS_NAME is not null
+		<include refid="Base_Query_SQL" />
+		group by t.OS_NAME,t.OS_VER,t.OS_MFR
+	</select>
+	
+	<select id="getOsDaily" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.osName,z.osVer,z.osMfr,z.count,z.daily
+		  FROM (SELECT y.osName,
+		  			   y.osVer,
+		  			   y.osMfr,
+		               COUNT('1') count,
+		               y.daily
+		          FROM (SELECT t.OS_NAME as osName,
+						       t.OS_VER as osVer,
+						       t.OS_MFR as osMfr, 
+		                       to_char(to_date(t.time24, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-MM-dd') as daily
+		                  FROM ZFTAL_METRIC_DATA t
+		                 where t.OS_NAME is not null
+		                 <include refid="Base_Query_SQL" />
+		               ) y
+		         group by y.osName,y.osVer,y.osMfr,y.daily
+		  ) z <![CDATA[
+			 where rownum <= #{top} order by z.daily desc
+		  ]]>
+	</select>
+	
+	<select id="getOsList" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT distinct t.OS_NAME as osName
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.OS_NAME is not null
+	</select>
+	
+	<select id="getOsTop" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.osName,z.osVer,z.osMfr,z.count FROM (
+			SELECT t.OS_NAME as osName,
+			       t.OS_VER as osVer,
+			       t.OS_MFR as osMfr, 
+			       COUNT('1') count
+			  FROM ZFTAL_METRIC_DATA t
+			  where t.OS_NAME is not null
+		      <include refid="Base_Query_SQL" />
+			  group by t.OS_NAME,t.OS_VER,t.OS_MFR
+		) z <![CDATA[
+			where rownum <= #{top} order by z.count desc
+		]]>
+	</select>
+	
+	<select id="getBrowserRatio" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		 SELECT t.BROWSER_NAME as browserName,
+				t.BROWSER_VER as browserVer,
+				t.BROWSER_TYPE as browserType,
+				t.BROWSER_KERNEL as browserKernel, 
+				COUNT('1') browserCount, 
+				100 * round(COUNT('1')/SUM(COUNT('1')) OVER(),4) psnd
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.BROWSER_NAME is not null
+		 <include refid="Base_Query_SQL" />
+		 group by t.BROWSER_NAME,t.BROWSER_VER,t.BROWSER_TYPE,t.BROWSER_KERNEL
+	</select>
+	
+	<select id="getBrowserDaily" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.browserName,z.browserVer,z.browserType,z.browserKernel,z.count,z.daily
+		  FROM (SELECT y.browserName,
+		  			   y.browserVer,
+		  			   y.browserType,
+		  			   y.browserKernel,
+		               COUNT('1') count,
+		               y.daily
+		          FROM (SELECT t.BROWSER_NAME as browserName,
+						       t.BROWSER_VER as browserVer,
+						       t.BROWSER_TYPE as browserType,
+						       t.BROWSER_KERNEL as browserKernel, 
+		                       to_char(to_date(t.time24, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-MM-dd') as daily
+		                  FROM ZFTAL_METRIC_DATA t
+		                 where t.BROWSER_NAME is not null
+		                 <include refid="Base_Query_SQL" />
+		               ) y
+		         group by y.browserName,y.browserVer,y.browserType,y.browserKernel,y.daily
+		  ) z <![CDATA[
+			 where rownum <= #{top} order by z.daily desc
+		  ]]>
+	</select>
+	
+	<select id="getBrowserList" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT distinct t.BROWSER_NAME as browserName
+		  FROM ZFTAL_METRIC_DATA t
+		 where t.BROWSER_NAME is not null
+	</select>
+	
+	<select id="getBrowserTop" resultType="java.util.HashMap" parameterType="ApiMetircModel">
+		SELECT z.browserName,z.browserVer,z.browserType,z.browserKernel,z.count FROM (
+			SELECT t.BROWSER_NAME as browserName,
+			       t.BROWSER_VER as browserVer,
+			       t.BROWSER_TYPE as browserType,
+			       t.BROWSER_KERNEL as browserKernel, 
+			       COUNT('1') count
+			  FROM ZFTAL_METRIC_DATA t
+			  where t.BROWSER_NAME is not null
+		      <include refid="Base_Query_SQL" />
+			  group by t.BROWSER_NAME,t.BROWSER_VER,t.BROWSER_TYPE,t.BROWSER_KERNEL
+		) z <![CDATA[
+			where rownum <= #{top} order by z.count desc
+		]]>
+	</select>
+	
+</mapper>

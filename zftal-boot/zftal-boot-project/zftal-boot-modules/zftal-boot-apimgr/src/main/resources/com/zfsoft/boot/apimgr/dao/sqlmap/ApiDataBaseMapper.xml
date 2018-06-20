@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.apimgr.dao.daointerface.IApiDatabaseDao">
+
+	<resultMap id="ApiDatabaseMap" type="ApiDatabaseModel">
+		<result property="id" column="DB_ID" />
+		<result property="name" column="DB_NAME" />
+		<result property="cnname" column="DB_NAME_CN" />
+		<result property="dbtype" column="DB_TYPE" />
+		<result property="url" column="DB_URL" />
+		<result property="username" column="DB_USERNAME" />
+		<result property="password" column="DB_PASSWORD" />
+		<result property="desc" column="DB_DESC" />
+		<result property="owner" column="DB_OWNER" />
+	</resultMap>
+
+	<insert id="insert" parameterType="ApiDatabaseModel">
+		insert into
+		ZFTAL_API_DATABASE(DB_NAME,DB_NAME_CN,DB_TYPE,DB_URL,DB_USERNAME,DB_PASSWORD,DB_DESC,DB_OWNER)
+		values(#{name},#{cnname},#{dbtype},#{url},#{username},#{password},#{desc},#{owner})
+	</insert>
+
+	<delete id="batchDelete" parameterType="java.util.List">
+		delete from ZFTAL_API_DATABASE where DB_ID in
+		<foreach collection="list" item="ids" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="ApiDatabaseModel">
+		update ZFTAL_API_DATABASE
+		<set>
+			<if test="dbtype != null and dbtype != ''">DB_TYPE = #{dbtype,jdbcType=VARCHAR},</if>
+			<if test="name != null and name != ''">DB_NAME = #{name,jdbcType=VARCHAR},</if>
+			<if test="cnname != null and cnname != ''">DB_NAME_CN = #{cnname,jdbcType=VARCHAR},</if>
+			<if test="url != null and url != ''">DB_URL = #{url,jdbcType=VARCHAR},</if>
+			<if test="username != null and username != ''">DB_USERNAME = #{username,jdbcType=VARCHAR},</if>
+			<if test="password != null and password != ''">DB_PASSWORD = #{password,jdbcType=VARCHAR},</if>
+			<if test="desc != null and desc != ''">DB_DESC = #{desc,jdbcType=CLOB}</if>
+		</set>
+		where DB_ID = #{id}
+	</update>
+
+	<select id="getDependencies" resultType="java.util.HashMap"
+		parameterType="java.util.List">
+		SELECT distinct
+		t.DB_ID,
+		t.DB_NAME,
+		decode(x.API_FOR, 'current',
+		'当前系统数据源', t.DB_NAME_CN) DB_NAME_CN
+		FROM ZFTAL_API_DATABASE t,
+		ZFTAL_API_INFO x
+		WHERE t.DB_ID = x.API_FOR
+		AND t.DB_ID in
+		<foreach collection="list" item="ids" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</select>
+
+	<select id="getModel" resultMap="ApiDatabaseMap" parameterType="java.lang.String">
+		SELECT
+		t.DB_ID,t.DB_NAME,t.DB_NAME_CN,t.DB_TYPE,t.DB_URL,t.DB_USERNAME,t.DB_PASSWORD,t.DB_DESC,t.DB_OWNER
+		FROM ZFTAL_API_DATABASE t WHERE t.DB_ID = #{id}
+	</select>
+
+	<select id="getModelByDbName" resultMap="ApiDatabaseMap" parameterType="java.lang.String">
+		SELECT
+		t.DB_ID,t.DB_NAME,t.DB_NAME_CN,t.DB_TYPE,t.DB_URL,t.DB_USERNAME,t.DB_PASSWORD,t.DB_DESC,t.DB_OWNER
+		FROM ZFTAL_API_DATABASE t WHERE t.DB_NAME = #{dbname}
+	</select>
+
+	<select id="getModelList" resultMap="ApiDatabaseMap"
+		parameterType="ApiDatabaseModel">
+		SELECT
+		t.DB_ID,t.DB_NAME,t.DB_NAME_CN,t.DB_TYPE,t.DB_URL,t.DB_USERNAME,t.DB_PASSWORD,t.DB_DESC,t.DB_OWNER
+		FROM ZFTAL_API_DATABASE t
+		<where>
+			<if test="owner != null and owner != '' ">
+				and t.DB_OWNER = #{owner}
+			</if>
+		</where>
+	</select>
+
+	<select id="getPagedList" resultMap="ApiDatabaseMap"
+		parameterType="ApiDatabaseModel">
+		SELECT
+		t.DB_ID,t.DB_NAME,t.DB_NAME_CN,t.DB_TYPE,t.DB_URL,t.DB_USERNAME,t.DB_PASSWORD,t.DB_DESC,t.DB_OWNER
+		FROM ZFTAL_API_DATABASE t
+		<where>
+			<if test="dbtype != null and dbtype != '' ">
+				and t.DB_TYPE = #{dbtype}
+			</if>
+			<if test="owner != null and owner != '' ">
+				and t.DB_OWNER = #{owner}
+			</if>
+		</where>
+	</select>
+
+	<select id="getDatabaseListByIds" parameterType="java.util.List"
+		resultType="PairModel">
+		SELECT t.DB_NAME as key,t.DB_NAME_CN as value FROM ZFTAL_API_DATABASE t
+		where DB_ID in
+		<foreach collection="list" item="ids" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</select>
+
+	<select id="getDatabaseList" resultMap="ApiDatabaseMap" parameterType="java.lang.String">
+		SELECT
+		t.DB_ID,t.DB_NAME,t.DB_NAME_CN,t.DB_TYPE,t.DB_URL,t.DB_USERNAME,t.DB_PASSWORD,t.DB_DESC,t.DB_OWNER
+		FROM ZFTAL_API_DATABASE t where t.DB_OWNER = #{owner}
+	</select>
+
+	<select id="getTableNameList" resultType="java.util.HashMap" >
+		SELECT t.table_name
+		TABLE_NAME,substr(nvl(t.comments,t.table_name),0,20)
+		COMMENTS FROM
+		user_tab_comments t WHERE t.table_name not like '%==%'
+	</select>
+	<select id="getTableNameListForMysql" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select TABLE_NAME,table_comment as COMMENTS from information_schema.`tables` where table_schema = #{dbName}
+	</select>
+	<select id="getTableNameListForPostgresql" resultType="java.util.HashMap">
+		select relname as TABLE_NAME,cast(obj_description(relfilenode,'pg_class') as varchar) as COMMENTS from pg_class c 
+			where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname 
+	</select>
+	<select id="getTableNameListForSqlServer" resultType="java.util.HashMap">
+		select sysobjects.name as TABLE_NAME,cast(sys.extended_properties.value as varchar(200)) as COMMENTS from sysobjects 
+			left join sys.extended_properties on sysobjects.id=sys.extended_properties.major_id
+			where sysobjects.type = 'U' and (sys.extended_properties.minor_id = 0 or sys.extended_properties.minor_id is null)
+	</select>
+
+	<select id="getTableColumnList" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT t.column_name COLUMN_NAME,
+		nvl(t.comments,
+		t.column_name) COMMENTS
+		FROM user_col_comments t
+		WHERE
+		lower(t.table_name) = lower(#{tableName})
+	</select>
+	<select id="getTableColumnListForMysql" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select COLUMN_NAME ,column_comment as COMMENTS from information_schema.`columns` 
+			where table_schema = #{dbName} and table_name = #{tableName}
+	</select>
+	<select id="getTableColumnListForPostgresql" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT a.attname as COLUMN_NAME,col_description(a.attrelid,a.attnum) as COMMENTS  
+			FROM pg_class as c,pg_attribute as a where c.relname = #{tableName} and a.attrelid = c.oid and a.attnum>0
+	</select>
+	<select id="getTableColumnListForSqlServer" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT B.name AS COLUMN_NAME,cast(C.value as varchar(200)) AS COMMENTS FROM sys.tables A INNER JOIN sys.columns B 
+			ON B.object_id = A.object_id LEFT JOIN sys.extended_properties C 
+			ON C.major_id = B.object_id AND C.minor_id = B.column_id 
+			WHERE A.name = #{tableName}
+	</select>
+
+	<!-- 根据解析出的SQL中使用的查询表名称，得到不重复的字段描述信息 -->
+	<select id="getSQLParserColumnList" parameterType="ApiDatabaseModel"
+		resultType="java.util.HashMap">
+		<![CDATA[
+		select t.COLUMN_NAME, t.COMMENTS
+		  from (select distinct lower(t.column_name) as COLUMN_NAME,
+		                        t.comments as COMMENTS
+		          from user_col_comments t
+		         where lower(t.table_name) in 
+		          ]]>
+		<foreach collection="queryList" item="item" index="index"
+			open=" ( " separator="," close=")">
+					<![CDATA[lower(#{item})]]>
+		</foreach>
+		         <![CDATA[
+		       ) t
+		 order by t.COLUMN_NAME asc
+		 ]]>
+	</select>
+	<select id="getSQLParserColumnListForMysql" resultType="java.util.HashMap">
+		select COLUMN_NAME ,column_comment as COMMENTS from information_schema.`columns` 
+			where table_schema = #{dbName} and table_name in
+			<foreach collection="queryList" item="item" index="index" open=" ( " separator="," close=")">
+					#{item}
+			</foreach>
+			 group by COLUMN_NAME
+	</select>
+	<select id="getSQLParserColumnListForPostgresql" resultType="java.util.HashMap">
+		SELECT DISTINCT a.attname as COLUMN_NAME,col_description(a.attrelid,a.attnum) as COMMENTS  
+			FROM pg_class as c,pg_attribute as a where a.attrelid = c.oid and a.attnum>0 and c.relname in 
+			<foreach collection="queryList" item="item" index="index" open=" ( " separator="," close=")">
+					#{item}
+			</foreach>
+	</select>
+	<select id="getSQLParserColumnListForSqlServer" resultType="java.util.HashMap">
+		SELECT DISTINCT B.name AS COLUMN_NAME,cast(C.value as varchar(200)) AS COMMENTS 
+			FROM sys.tables A INNER JOIN sys.columns B 
+			ON B.object_id = A.object_id LEFT JOIN sys.extended_properties C 
+			ON C.major_id = B.object_id AND C.minor_id = B.column_id 
+			WHERE A.name in 
+			<foreach collection="queryList" item="item" index="index" open=" ( " separator="," close=")">
+					#{item}
+			</foreach>
+	</select>
+
+	<!-- 根据Table构造数据增加SQL并执行 -->
+	<insert id="insertData" parameterType="hashMap">
+		<if test="paramList != null and paramList.size() > 0 ">
+			insert into ${tableName}(
+			<foreach collection="paramList" item="param" index="index"
+				separator=",">${param.key}</foreach>
+			)
+			values(
+			<foreach collection="paramList" item="param" index="index"
+				separator=",">#{param.value}</foreach>
+			)
+		</if>
+	</insert>
+
+	<!-- 根据SQL执行增加操作 -->
+	<insert id="insertDataBySQL" parameterType="hashMap">
+		${data_sql}
+	</insert>
+
+	<!-- 根据Table构造数据删除SQL并执行 -->
+	<delete id="deleteData" parameterType="hashMap">
+		<if test="paramList != null and paramList.size() > 0 ">
+			delete from ${tableName} t
+			<where>
+				<foreach collection="paramList" item="param" index="index"
+					separator="and ">
+					t.${param.key} = #{param.value}
+				</foreach>
+			</where>
+		</if>
+	</delete>
+
+	<!-- 根据SQL执行删除操作 -->
+	<delete id="deleteDataBySQL" parameterType="hashMap">
+		${data_sql}
+	</delete>
+
+	<!-- 根据Table构造数据更新SQL并执行 -->
+	<update id="updateData" parameterType="hashMap">
+		<if
+			test="updateList != null and updateList.size() > 0 and paramList != null and paramList.size() > 0 ">
+			update ${tableName} t
+			<set>
+				<foreach collection="updateList" item="item" index="index"
+					separator=",">
+					t.${item.key} = #{item.value}
+				</foreach>
+			</set>
+			<where>
+				<foreach collection="paramList" item="param" index="index"
+					separator="and ">
+					t.${param.key} = #{param.value}
+				</foreach>
+			</where>
+		</if>
+	</update>
+
+	<!-- 根据SQL执行更新操作 -->
+	<update id="updateDataBySQL" parameterType="hashMap">
+		${data_sql}
+	</update>
+
+	<!-- 查询数据：自动判断是否分页查询 -->
+	<select id="getDataList" resultType="java.util.HashMap"
+		parameterType="hashMap">
+		<if test="fieldList != null and fieldList.size() > 0">
+			<foreach collection="fieldList" item="item" index="index"
+				open=" select " separator=",">
+				t.${item.key}
+				<if test="item.alias !=null  and item.alias != '' "> as #{item.alias} </if>
+			</foreach>
+			from ${tableName} t
+			<if test="paramList != null and paramList.size() > 0 ">
+				<where>
+					<foreach collection="paramList" item="param" index="index"
+						separator="and ">
+						t.${param.key} = #{param.value}
+					</foreach>
+				</where>
+			</if>
+		</if>
+	</select>
+
+	<!-- 通过SQL查询数据：自动判断是否分页查询 -->
+	<select id="getDataListBySQL" parameterType="string" resultType="java.util.HashMap">
+		${data_sql}
+	</select>
+
+</mapper>

@@ -1,0 +1,342 @@
+body{
+	background: #ecf0f5;
+}
+
+.api-tag{
+	display: inline-block;
+	min-width:50px;
+	height: 20px;
+	padding: 0 10px;
+	background-color: #42b4d5;
+	border-radius: 5px;
+	color: #ffffff;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	margin-left: 10px;
+}
+.api-tag-dark-blue{
+	background-color: #1981d7;
+}
+.api-tag-green{
+	background-color: #84ccc9;
+}
+.api-tag-cyan{
+	background-color: #88abda;
+}
+.api-tag-purple{
+	background-color: #8f82bc;
+}
+
+
+.survey-btn{
+	display: inline-block;
+	width: 120px;
+	height: 48px;
+	background: url(../images/detailBg.png) no-repeat left center;
+	line-height: 46px;
+	color: #ffffff;
+	padding-left: 35px;
+}
+.survey-btn:hover{
+	color: #FFFFFF;
+}
+.surver-header{
+	height: 200px;
+	background: url(../images/searchBg.png) no-repeat center center;
+	background-size: cover;
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+}
+.survey-search{
+	position: relative;
+	margin: 0 auto;
+	width: 500px;
+}
+.survey-input{
+	display: inline-block;
+	width: 500px;
+	height: 35px;
+	padding: 0;
+	padding-left: 15px;
+	padding-right: 40px;
+	margin-top: 80px;
+	border: none;
+	outline: none;
+}
+.survey-submit{
+	background: url(../images/fangdajing.png) no-repeat center center !important;
+	outline: none;
+	border: none;
+	width: 23px;
+	height: 23px;
+	position: absolute;
+	bottom: 5px;
+	right: 10px;
+}
+
+.survey-box{
+	margin: 8px 0;
+	background: #FFFFFF;
+	 overflow: hidden;
+}
+.survey-box img{
+	float: left;
+	width: 99px;
+	height: 99px;
+	margin-top: 18px;
+	margin-left: 25px;
+	margin-right: 15px;
+}
+.survey-box-text{
+	float: left;
+	width: 80%;
+	overflow: hidden;
+	padding-bottom:20px
+}
+.survey-box-text1{
+	overflow: hidden;
+}
+.survey-box-text h4{
+	float: left;
+	font-weight: bold;
+	font-size: 16px;
+	font-family: "微软雅黑";
+	line-height: 40px;
+	margin-right: 10px;
+	margin-bottom: 0;
+}
+.survey-box-text1 span{
+	margin-top: 20px;
+}
+.survey-box-text p{
+	color: #666666;
+	text-align: left;
+	line-height: 40px;
+	margin-bottom: 5px;
+	width: 90%;
+	overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.survey-visit span{
+	color: #666666;
+	padding-left: 25px;
+}
+.survey-link{
+	background: url(../images/zhuizi.png) no-repeat left center;
+}
+.survey-num{
+	background: url(../images/visit.png) no-repeat left center;
+}
+.survey-box .survey-btn{
+	float: right;
+    margin-right: 20px;
+    margin-top: 35px;
+    position: absolute;
+    right: 20px;
+}
+
+
+/*api详情页*/
+.white-shadow{
+	background: #ffffff;
+	border-radius: 3px;
+	box-shadow: 0 0px 15px rgba(200,200,200,.5);
+    -webkit-box-shadow: 0 0px 15px rgba(200,200,200,.5);
+}
+.api-apply-top{
+	height: 60px;
+	border-bottom: 1px solid #eeeeee;
+}
+.api-apply-top h4{
+	font-size: 19px;
+	font-family: "微软雅黑";
+	color: #00244a;
+	font-weight: bold;
+	line-height: 60px;
+	float: left;
+	margin: 0 20px;
+}
+.api-apply-top span.color-span{
+	display: inline-block;
+	height: 23px;
+	line-height: 23px;
+	min-width: 70px;
+	border: 1px solid #d90000;
+	text-align: center;
+	font-size: 14px;
+	color: #d90000;
+	padding: 0 10px;
+	margin: 19px 5px;
+}
+.api-apply-top span.cyan-span{
+	color: #137ee2;
+	border-color: #137ee2;
+}
+.api-apply-top span.green-span{
+	color: #00cab5;
+	border-color: #00cab5;
+}
+.btn-apply{
+	float: right;
+	margin-top: 13px;
+	background: #4588f8;
+	border: none;
+	border-radius: 2px;
+	padding: 10px 25px;
+	margin-right: 15px;
+}
+.btn-apply:hover{
+	background: #3078d7;
+}
+.api-apply-bot{
+	padding: 20px 40px;
+}
+.api-apply-bot p{
+	font-size: 14px;
+	color: #36526f;
+	line-height: 35px;
+	margin-bottom: 30px;
+}
+.api-tab-box{
+	margin: 10px 0;
+}
+
+/*标签组样式*/
+.tab-base {
+    margin-bottom: 35px;
+}
+.tab-base a{
+	color: #555555;
+}
+.tab-base .tab-content {
+    background-color: #fff;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    padding: 15px;
+}
+.tab-stacked-left, .tab-stacked-right {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+.tab-stacked-left .nav-tabs {
+    width: 1%;
+    border: 0;
+}
+.tab-stacked-left .tab-content, .tab-stacked-right .tab-content {
+    overflow: hidden;
+}
+
+.tab-stacked-left .nav-tabs, .tab-stacked-right .nav-tabs, .tab-stacked-left .tab-content, .tab-stacked-right .tab-content {
+    display: table-cell;
+    vertical-align: top;
+}
+.tab-stacked-left .nav-tabs > li, .tab-stacked-right .nav-tabs > li {
+    float: none;
+    margin: 0;
+}
+.tab-stacked-right .nav-tabs > li a {
+    border-left-color: transparent;
+    border-radius: 0;
+}
+.tab-stacked-left .tab-content, .tab-stacked-right .tab-content {
+    overflow: hidden;
+}
+.tab-stacked-right .nav-tabs {
+    width: 1%;
+    border: 0;
+}
+.tab-base-middle .nav-tabs {
+    border-bottom: 0;
+}
+.nav-tabs li a {
+    border-radius: 0;
+}
+
+
+
+/*样式一顶部标签页基本样式*/
+.tab-base-top .nav-tabs{
+	background: #f9f9f9;
+	border-bottom: 1px solid #eeeeee;
+	border-top: 1px solid #eeeeee;
+}
+.tab-base-top .nav-tabs>li:not(.active)>a{
+	background: #f9f9f9;
+	border: 1px solid #eeeeee;
+	border-left: 1px solid #ffffff;
+	border-top: none;
+	margin: 0;
+	box-sizing: border-box;
+}
+.tab-base-top .nav-tabs>li:not(.active)>a:hover{
+	color: #4A89DC;
+	border: 1px solid #eeeeee;
+	border-left: 1px solid #ffffff;
+	border-top: none;
+}
+.tab-base-top .nav-tabs>.active>a, .tab-base-top .nav-tabs>.active a:hover, .tab-base-top .nav-tabs>.active>a:focus{
+	border-right: 1px solid #eeeeee;
+	border-left: 1px solid #ffffff;
+	border-top: none;
+	margin: 0;
+}
+
+.nav-tab-api{
+	
+}
+.nav-tab-api>li.active>a, .nav-tab-api>li.active>a:focus, .nav-tab-api>li.active>a:hover{
+	color: #00244a;
+	font-weight: bold;
+}
+.tab-content{
+	min-height: 400px;
+}
+.span-box{
+	margin-left: 10px;
+}
+span.color-span-m{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	min-width: 90px;
+	border: 1px solid #375d89;
+	text-align: center;
+	font-size: 14px;
+	color: #375d89;
+	padding: 0 20px;
+	margin: 19px 5px;
+	margin-top: 4px;
+	cursor: pointer;
+}
+span.color-span-m:hover{
+	background-color:#54b5ff;
+	color: #FFFFFF;
+	border: 1px solid #54b5ff;
+}
+.api-tab-text{
+	margin-left: 15px;
+}
+.api-tab-text h6{
+	color: #333333;
+	font-weight: bold;
+	font-size: 16px;
+	background: #d6dfec;
+	height: 45px;
+	line-height: 45px;
+	padding-left: 20px;
+	margin-top: 0;
+}
+.api-tab-text p{
+	color: #333333;
+	line-height: 30px;
+	padding: 20px;
+	padding-top: 10px;
+}
+.api-code{
+	background: #f2f3f5;
+}

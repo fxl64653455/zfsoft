@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.zfsoft.boot.shiro.ShiroZjucookieWebAutoConfiguration,\
+com.zfsoft.boot.shiro.ShiroZjucookieWebFilterConfiguration

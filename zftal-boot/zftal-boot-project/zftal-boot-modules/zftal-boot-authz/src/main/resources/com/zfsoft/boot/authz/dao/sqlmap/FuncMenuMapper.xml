@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zfsoft.boot.authz.dao.daointerface.IFuncMenuDao">
+
+	<!-- 通过功能代码查询功能代码名称-->
+ 	<select id="getValue" parameterType="string" resultType="string">
+ 		select (select a.gnmkmc
+		          from zftal_xtgl_gnmkdmb a
+		         where a.gnmkdm = t.fjgndm) || ' - ' || t.gnmkmc as gnmkmc
+		  from zftal_xtgl_gnmkdmb t
+		 where t.gnmkdm = #{key}
+ 	</select>
+ 	
+ 	<!-- 根据 用户ID、角色代码 、Locale 获取 一级菜单 -->
+    <select id="getTopNavMenuList" parameterType="string" resultType="com.zfsoft.basemodel.BaseMap">
+    <![CDATA[
+    	select distinct t.fjgndm,
+		                t.gnmkdm,
+		                t.gnmkmc,
+		                nvl(t.dyym, '#') dyym,
+		                t.tblj,
+		                (case when t.gnmkdm = 'N' then
+				          '0'
+				          when t.dyym is not null then 
+				          	decode((select count('1') from zftal_xtgl_gnmkdmb x where x.fjgndm = t.gnmkdm),0,'1','0')
+				         else
+				          '0' end) sfgnym,
+				        t.tblj
+		  from zftal_xtgl_gnmkdmb t
+		 where t.fjgndm = 'N' or t.fjgndm is null
+		 start with t.gnmkdm in (select distinct t2.gnmkdm
+		                           from zftal_xtgl_jsgnmkczb t1,
+		                                zftal_xtgl_gnmkczb   t2,
+		                                zftal_xtgl_yhjsb     t3
+		                          where t1.gnczid = t2.gnczid
+		                            and t1.jsdm = t3.jsdm
+		                            and t3.yhm = #{yhm}
+		                            and t3.jsdm = #{jsdm}
+		                         )
+		connect by prior t.fjgndm = t.gnmkdm
+		 order by t.gnmkdm
+    ]]>
+    </select>
+ 	
+ 	 <!-- 根据 用户ID、角色代码 、父级功能代码、Locale 获取 父级菜单下的功能菜单  -->
+    <select id="getChildNavMenuList" parameterType="string" resultType="com.zfsoft.basemodel.BaseMap">
+    <![CDATA[
+    	select distinct t.fjgndm,
+		                t.gnmkdm,
+		                t.gnmkmc,
+		                nvl(t.dyym, '#') dyym,
+		                t.tblj,
+		                (case when t.gnmkdm = 'N' then
+				          '0'
+				          when t.dyym is not null then 
+				          	decode((select count('1') from zftal_xtgl_gnmkdmb x where x.fjgndm = t.gnmkdm),0,'1','0')
+				         else
+				          '0' end) sfgnym,
+				        t.tblj
+		  from zftal_xtgl_gnmkdmb t
+		 where t.fjgndm = #{gnmkdm}
+		 start with t.gnmkdm in (select distinct t2.gnmkdm
+		                           from zftal_xtgl_jsgnmkczb t1,
+		                                zftal_xtgl_gnmkczb   t2,
+		                                zftal_xtgl_yhjsb     t3
+		                          where t1.gnczid = t2.gnczid
+		                            and t1.jsdm = t3.jsdm
+		                            and t3.yhm = #{yhm}
+		                            and t3.jsdm = #{jsdm}
+		                         )
+		connect by prior t.fjgndm = t.gnmkdm
+		 order by t.gnmkdm
+    ]]>
+    </select>
+    
+    <!-- 根据 用户ID、角色代码 、父级功能代码、Locale 获取 所有的功能菜单  -->
+    <select id="getNavMenuTreeList" parameterType="string" resultType="com.zfsoft.basemodel.BaseMap">
+    <![CDATA[
+    	select distinct t.fjgndm,
+		                t.gnmkdm,
+		                t.gnmkmc,
+		                nvl(t.dyym, '#') dyym,
+		                t.tblj,
+		                (case when t.gnmkdm = 'N' then
+				          '0'
+				          when t.dyym is not null then 
+				          	decode((select count('1') from zftal_xtgl_gnmkdmb x where x.fjgndm = t.gnmkdm),0,'1','0')
+				         else
+				          '0' end) sfgnym,
+				        t.tblj
+		  from zftal_xtgl_gnmkdmb t]]>
+		  <if test="gnmkdm != null and gnmkdm != '' ">
+		     where exists (select '1'
+	          from (select distinct t.gnmkdm
+	                  from zftal_xtgl_gnmkdmb t
+	                 start with t.fjgndm = #{gnmkdm}
+	                connect by prior t.gnmkdm = t.fjgndm
+	               ) z
+	         where t.gnmkdm = z.gnmkdm )
+	      </if>
+		  <![CDATA[
+		 start with t.gnmkdm in (select distinct t2.gnmkdm
+		                           from zftal_xtgl_jsgnmkczb t1,
+		                                zftal_xtgl_gnmkczb   t2,
+		                                zftal_xtgl_yhjsb     t3
+		                          where t1.gnczid = t2.gnczid
+		                            and t1.jsdm = t3.jsdm
+		                            and t3.yhm = #{yhm}
+		                            and t3.jsdm = #{jsdm}
+		                         )
+		connect by prior t.fjgndm = t.gnmkdm
+		 order by t.gnmkdm
+    ]]>
+    </select>
+    
+</mapper>

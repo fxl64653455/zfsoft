@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>com.zfsoft</groupId>
+		<artifactId>zftal-boot-parent</artifactId>
+		<version>1.0.4-SNAPSHOT</version>
+		<relativePath>../zftal-boot-parent</relativePath>
+	</parent>
+	
+	<artifactId>zftal-boot-modules</artifactId>
+	<packaging>pom</packaging>
+	<name>ZFtal Boot Module</name>
+	<description>ZFtal Boot Module</description>
+	
+	<modules>
+		<module>zftal-boot-init</module>
+		<module>zftal-boot-authz</module>
+		<module>zftal-boot-logbiz</module>
+		<module>zftal-boot-runenv</module>
+		<module>zftal-boot-web-v5</module>
+		<module>zftal-boot-api</module>
+		<module>zftal-boot-webmvc</module>
+		<module>zftal-boot-notice</module>
+		<module>zftal-boot-apimgr</module>
+		<module>zftal-boot-ms</module>
+	</modules>
+
+</project>

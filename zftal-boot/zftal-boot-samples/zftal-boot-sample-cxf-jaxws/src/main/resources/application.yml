@@ -1,0 +1,23 @@
+
+server:
+  port: 8282
+  
+spring: 
+  output:
+    ansi:
+      enabled: always
+  messages:
+    basename: /i18n/message
+  profiles: 
+    active: dev
+    
+################################################################################################################  
+###CXF Webservice 配置：  
+################################################################################################################ 
+cxf: 
+  path: /ws
+  
+#日志级别
+logging: 
+  config: classpath:log4j2.xml
+    

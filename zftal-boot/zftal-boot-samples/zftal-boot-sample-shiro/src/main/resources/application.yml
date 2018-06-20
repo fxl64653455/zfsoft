@@ -1,0 +1,54 @@
+# 默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
+#   测试环境：java -jar my-spring-boot.jar --spring.profiles.active=test
+#   生产环境：java -jar my-spring-boot.jar --spring.profiles.active=prod
+
+server:
+  port: 8085 
+
+spring: 
+  output:
+    ansi:
+      enabled: always
+  messages:
+    basename: /i18n/message
+  profiles: 
+    active: dev
+    
+shiro:
+  enabled: true
+  login-url: /authz/login/slogin
+  redirect-url: /authz/login/index
+  success-url: /index
+  unauthorized-url: /error
+  annotations: 
+    enabled: true
+  web: 
+    enabled: true
+  filter-chain-definition-map: 
+    / : anon
+    /*favicon.ico : anon
+    /webjars/** : anon
+    /assets/** : anon
+    /html/** : anon
+    /error* : anon
+    /logo/** : anon
+    /kaptcha* : anon
+    /pwdmgr/retake/** : anon
+    /pwdmgr/update/** : anon
+    /authz/login_code* : anon
+    /authz/login/getPublicKey* : anon
+    /authz/login/index* : anon
+    /authz/login/slogin* : authc
+    /druid/* : roles[admin]
+    /api/** : anon
+    /ws/** : anon
+    /sockets/** : anon
+    /topic/** : anon
+    /zfsdb/oauth2/accessToken : anon
+    /logout : logout
+    /** : sessionExpired,sessionControl,authc
+    
+#日志级别
+logging: 
+  config: classpath:log4j2.xml
+    
